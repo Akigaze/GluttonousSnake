@@ -1,9 +1,8 @@
 package view;
 
-import game.Egg;
-import game.Grid;
-import game.Snake;
-import method.BaseFrame;
+import entity.Egg;
+import entity.Grid;
+import entity.Snake;
 
 import java.awt.*;
 import java.awt.event.KeyAdapter;
@@ -85,7 +84,7 @@ public class GluttonousSnakeGame extends BaseFrame {
 
   @Override
   public void paint(Graphics g) {
-    grid.drawn(g);
+    GluttonousSnakeGame.grid.drawn(g);
     if (!this.gameOver && !this.stop) {
       if (this.snake.isDead()) {
         this.gameOver = true;

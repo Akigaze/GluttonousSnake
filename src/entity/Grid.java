@@ -1,6 +1,7 @@
-package game;
+package entity;
 
-import method.GridConstant;
+import constant.GameConstant;
+import constant.GridConstant;
 
 import java.awt.*;
 
@@ -16,8 +17,8 @@ public class Grid {
 
   public Grid() {
     blockSize = GridConstant.BLOCK_SIZE;
-    width = GridConstant.WIDTH;
-    height = GridConstant.HEIGHT;
+    width = GameConstant.GRID_WIDTH;
+    height = GameConstant.GRID_HEIGHT;
     background = GridConstant.BACKGROUND_COLOR;
     foreground = GridConstant.FOREGROUND_COLOR;
   }

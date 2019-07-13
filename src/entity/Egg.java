@@ -1,6 +1,6 @@
-package game;
+package entity;
 
-import method.GridConstant;
+import constant.GridConstant;
 
 import java.awt.*;
 

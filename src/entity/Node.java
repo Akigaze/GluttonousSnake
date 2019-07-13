@@ -1,6 +1,6 @@
-package game;
+package entity;
 
-import method.GridConstant;
+import constant.GridConstant;
 
 /**
  * Created by 11755_000 on 2018/1/23.

@@ -1,11 +1,11 @@
-package game;
+package entity;
 
-import method.GridConstant;
+import constant.GameConstant;
+import constant.GridConstant;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.util.*;
-import java.util.List;
 
 /**
  * Created by 11755_000 on 2018/1/23.
@@ -119,7 +119,7 @@ public class Snake {
 
   public boolean isDead() {
     boolean fail = false;
-    if (head.x < 0 || head.y < 0 || head.x + head.size > GridConstant.WIDTH || head.y + head.size > GridConstant.HEIGHT) {
+    if (head.x < 0 || head.y < 0 || head.x + head.size > GameConstant.GRID_WIDTH || head.y + head.size > GameConstant.GRID_HEIGHT) {
       fail = true;
     }
     if (size > 4) {
