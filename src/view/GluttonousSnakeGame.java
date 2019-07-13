@@ -3,7 +3,7 @@ package view;
 import entity.Egg;
 import entity.Grid;
 import entity.Snake;
-import service.EggFactory;
+import service.FoodFactory;
 
 import java.awt.*;
 import java.awt.event.KeyAdapter;
@@ -48,7 +48,7 @@ public class GluttonousSnakeGame extends BaseFrame {
   }
 
   private static Grid grid = new Grid();
-  private EggFactory eggFactory;
+  private FoodFactory foodFactory;
   private Snake snake;
   private Egg egg;
   private boolean stop;
@@ -57,7 +57,7 @@ public class GluttonousSnakeGame extends BaseFrame {
   public GluttonousSnakeGame() {
     this.snake = new Snake();
     this.egg = new Egg();
-    this.eggFactory = new EggFactory();
+    this.foodFactory = new FoodFactory();
   }
 
   private void speedChange(int key) {
@@ -95,7 +95,7 @@ public class GluttonousSnakeGame extends BaseFrame {
         this.snake.move();
         if (this.snake.isEating(this.egg)) {
           this.snake.growUp(this.egg);
-          this.egg = this.eggFactory.birth(this.snake);
+          this.egg = this.foodFactory.birth(this.snake);
         }
       }
     }
@@ -111,7 +111,7 @@ public class GluttonousSnakeGame extends BaseFrame {
   private void printScore(Graphics g) {
     Color c = g.getColor();
     g.setColor(Color.WHITE);
-    g.drawString("得分：" + (this.snake.getSize() - 1), 50, 50);
+    g.drawString("得分：" + (this.snake.getSize()), 50, 50);
     g.setColor(c);
   }
 

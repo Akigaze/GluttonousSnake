@@ -42,7 +42,7 @@ public class Snake {
   private Node tail;
   private Color color = DEFAULT_SNAKE_COLOR;
   private int speed = BLOCK_SIZE;
-  private int size = 1;
+  private int size;
 
   public Snake() {
     this.head = new Node(2 * BLOCK_SIZE, 2 * BLOCK_SIZE);
@@ -84,13 +84,13 @@ public class Snake {
     }
   }
 
-  public void growUp(Node food) {
+  public void growUp(Egg food) {
     food.setDirection(this.head.getDirection());
     food.setColor(this.color);
     this.head.setPre(food);
     food.setNext(this.head);
     this.head = food;
-    size++;
+    this.size += food.getScore();
   }
 
   private boolean isHitBorder() {
