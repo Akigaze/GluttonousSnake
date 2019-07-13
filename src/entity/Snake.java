@@ -1,141 +1,124 @@
 package entity;
 
+import constant.Direction;
 import constant.GameConstant;
-import constant.GridConstant;
 
 import java.awt.*;
-import java.awt.event.KeyEvent;
-import java.util.*;
+import java.util.Arrays;
+
+import static constant.GameConstant.DEFAULT_SNAKE_COLOR;
+import static constant.GridConstant.BLOCK_SIZE;
 
 /**
  * Created by 11755_000 on 2018/1/23.
  */
 public class Snake {
-  Node head;
-  Node tail;
-  Color color = Color.GRAY;
-  int speed;
-  int size = 1;
-  public static java.util.List<Color> palette = new ArrayList<>();
 
-  static {
-    palette.add(Color.BLACK);
-    palette.add(Color.BLUE);
-    palette.add(Color.CYAN);
-    palette.add(Color.GRAY);
-    palette.add(Color.GREEN);
-    palette.add(Color.RED);
-    palette.add(Color.YELLOW);
-    palette.add(Color.ORANGE);
-    palette.add(Color.WHITE);
-    palette.add(Color.MAGENTA);
-    palette.add(Color.PINK);
-    palette.add(Color.DARK_GRAY);
-    palette.add(Color.LIGHT_GRAY);
+  enum MoveMonitor {
+    UP(Direction.up, 0, - BLOCK_SIZE),
+    DOWN(Direction.down, 0, BLOCK_SIZE),
+    LEFT(Direction.left, - BLOCK_SIZE, 0),
+    RIGHT(Direction.right, BLOCK_SIZE, 0),
+    DEFAULT(null, 0, 0);
+
+    private Direction direction;
+    private int x;
+    private int y;
+
+    MoveMonitor(Direction direction, int x, int y) {
+      this.direction = direction;
+      this.x = x;
+      this.y = y;
+    }
+
+    public static MoveMonitor getMonitor(Direction direction){
+      return Arrays.stream(MoveMonitor.values()).filter(m -> m.direction.equals(direction)).findFirst().orElse(DEFAULT);
+    }
   }
+  private Node head;
+  private Node tail;
+  private Color color = DEFAULT_SNAKE_COLOR;
+  private int speed;
+  private int size = 1;
 
   public Snake() {
-    head = new Node(2 * GridConstant.BLOCK_SIZE, 2 * GridConstant.BLOCK_SIZE);
-    speed = GridConstant.BLOCK_SIZE;
-
-    tail = head;
+    this.head = new Node(2 * BLOCK_SIZE, 2 * BLOCK_SIZE);
+    this.speed = BLOCK_SIZE;
+    this.tail = this.head;
   }
 
   public boolean isEating(Egg egg) {
-    Rectangle eggRect = new Rectangle(egg.getX(), egg.getY(), egg.getSize(), egg.getSize());
-    Rectangle headRect = new Rectangle(head.getX(), head.getY(), head.getSize(), head.getSize());
+    Rectangle eggRect = egg.toRectangle();
+    Rectangle headRect = this.head.toRectangle();
     return headRect.intersects(eggRect);
   }
 
   public void move() {
-    int _x = head.getX();
-    int _y = head.getY();
-    switch (head.getDir()) {
-      case down:
-        _y += speed;
-        break;
-      case up:
-        _y -= speed;
-        break;
-      case left:
-        _x -= speed;
-        break;
-      case right:
-        _x += speed;
-        break;
-    }
-    Node tempHead = new Node(_x, _y);
-    tempHead.setDir(head.getDir());
-    if (size == 1) {
-      head = tempHead;
-      tail = tempHead;
-    } else {
-      Node tempTail = tail.getPre();
-      tempHead.setNext(head);
-      head.setPre(tempHead);
-      head = tempHead;
-      tempTail.setNext(null);
-      tail = tempTail;
-    }
+    Node nextHead = getNextHead();
+    this.head.setPre(nextHead);
+    nextHead.setNext(this.head);
+    this.head = nextHead;
 
+    this.tail = this.tail.getPre();
+    this.tail.setNext(null);
   }
 
-  public void directionChange(KeyEvent e) {
-    int key = e.getKeyCode();
-    switch (key) {
-      case 37: {
-        if (head.getDir() != Node.Direction.right)
-          head.setDir(Node.Direction.left);
-      }
-      break;
-      case 38: {
-        if (head.getDir() != Node.Direction.down)
-          head.setDir(Node.Direction.up);
-      }
-      break;
-      case 39: {
-        if (head.getDir() != Node.Direction.left)
-          head.setDir(Node.Direction.right);
-      }
-      break;
-      case 40: {
-        if (head.getDir() != Node.Direction.up)
-          head.setDir(Node.Direction.down);
-      }
-      break;
+  private Node getNextHead() {
+    MoveMonitor monitor = MoveMonitor.getMonitor(this.head.getDirection());
+    Node nextHead = new Node(monitor.x + this.head.getX(), monitor.y + this.head.getY());
+    nextHead.setDirection(this.head.getDirection());
+    return nextHead;
+  }
+
+  private Direction getDirection(){
+    return this.head.getDirection();
+  }
+
+  public void directionChange(int key) {
+    Direction keyDirection = Direction.findByKey(key);
+    if (keyDirection != null){
+      Direction nextDirection = this.getDirection().nextDirection(keyDirection);
+      this.head.setDirection(nextDirection);
     }
   }
 
   public void growUp(Egg egg) {
-    Node temp = new Node();
-    temp.setY(egg.getY());
-    temp.setX(egg.getX());
-    temp.setDir(head.getDir());
-    head.setPre(temp);
-    temp.setNext(head);
-    head = temp;
+    Node newHead = new Node(egg.getX(), egg.getY());
+    newHead.setDirection(this.head.getDirection());
+    this.head.setPre(newHead);
+    newHead.setNext(this.head);
+    this.head = newHead;
     size++;
   }
 
-  public boolean isDead() {
-    boolean fail = false;
-    if (head.getX() < 0 || head.getY() < 0 || head.getX() + head.getSize() > GameConstant.GRID_WIDTH || head.getY() + head.getSize() > GameConstant.GRID_HEIGHT) {
-      fail = true;
-    }
-    if (size > 4) {
-      Rectangle headRect = new Rectangle(head.getX(), head.getY(), head.getSize(), head.getSize());
-      Node temp = head.getNext().getNext().getNext().getNext();
-      Rectangle tempRect = null;
-      while (temp != null) {
-        tempRect = new Rectangle(temp.getX(), temp.getY(), temp.getSize(), temp.getSize());
-        if (headRect.intersects(tempRect)) {
-          fail = true;
-          break;
-        }
-        temp = temp.getNext();
+  private boolean isHitBorder() {
+    return this.head.getX() < 0 || this.head.getY() < 0 || this.head.getX() + this.head.getSize() > GameConstant.GRID_WIDTH || this.head.getY() + this.head.getSize() > GameConstant.GRID_HEIGHT;
+  }
+  private boolean canHitBody(){
+    return this.size > 4;
+  }
+
+  private boolean isHitBody(){
+    Rectangle headRect = this.head.toRectangle();
+    Node nearestCanHit = this.head.getNext().getNext().getNext().getNext();
+    while (nearestCanHit != null) {
+      Rectangle tempRect = nearestCanHit.toRectangle();
+      if (headRect.intersects(tempRect)) {
+        return true;
       }
+      nearestCanHit = nearestCanHit.getNext();
     }
-    return fail;
+    return false;
+  }
+
+  public boolean isDead() {
+    if (this.isHitBorder()) {
+      return true;
+    }
+    if (this.canHitBody()) {
+      return this.isHitBody();
+    }
+    return false;
   }
 
   public void draw(Graphics g) {
@@ -143,16 +126,14 @@ public class Snake {
     Color c = g.getColor();
     g.setColor(color);
     while (no != null) {
-      int index = (int) (Math.random() * palette.size());
       g.fillRect(no.getX(), no.getY(), no.getSize(), no.getSize());
-      g.setColor(palette.get(index));
-      g.drawRect(no.getX(), no.getY(), no.getSize(), no.getSize());
+//      g.drawRect(no.getX(), no.getY(), no.getSize(), no.getSize());
       no = no.getNext();
     }
     g.setColor(c);
   }
 
   public int getSize() {
-    return size;
+    return this.size;
   }
 }

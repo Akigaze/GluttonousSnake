@@ -19,7 +19,7 @@ public class GluttonousSnakeGame extends BaseFrame {
     public void keyPressed(KeyEvent e) {
       int keyCode = e.getKeyCode();
       if (!isStop()) {
-        getSnake().directionChange(e);
+        getSnake().directionChange(keyCode);
         speedChange(keyCode);
       }
       stop(keyCode);

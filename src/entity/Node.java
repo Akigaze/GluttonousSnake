@@ -1,5 +1,6 @@
 package entity;
 
+import constant.Direction;
 import constant.GridConstant;
 
 import java.awt.*;
@@ -9,21 +10,17 @@ import java.awt.*;
  */
 
 public class Node {
-  public enum Direction {
-    up, down, left, right;
-  }
-
   private int size;
   private int x;
   private int y;
 
-  private Direction dir;
+  private Direction direction;
   private Node pre;
   private Node next;
 
   Node(int x, int y) {
     size = GridConstant.BLOCK_SIZE;
-    dir = Direction.right;
+    direction = Direction.right;
     this.x = x;
     this.y = y;
   }
@@ -56,12 +53,12 @@ public class Node {
     this.y = y;
   }
 
-  Direction getDir() {
-    return dir;
+  Direction getDirection() {
+    return direction;
   }
 
-  void setDir(Direction dir) {
-    this.dir = dir;
+  void setDirection(Direction direction) {
+    this.direction = direction;
   }
 
   public Node getNext() {
@@ -78,6 +75,10 @@ public class Node {
 
   public void setPre(Node pre) {
     this.pre = pre;
+  }
+
+  public Rectangle toRectangle(){
+    return new Rectangle(this.x, this.y, this.size, this.size);
   }
 
   public void draw(Graphics g) {
