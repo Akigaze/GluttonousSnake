@@ -3,6 +3,7 @@ package view;
 import entity.Egg;
 import entity.Grid;
 import entity.Snake;
+import service.EggFactory;
 
 import java.awt.*;
 import java.awt.event.KeyAdapter;
@@ -92,7 +93,7 @@ public class GluttonousSnakeGame extends BaseFrame {
         this.snake.move();
         if (this.snake.isEating(this.egg)) {
           this.snake.growUp(this.egg);
-          this.egg.rebirth(this.snake);
+          this.egg = EggFactory.birth(this.snake);
         }
       }
     }

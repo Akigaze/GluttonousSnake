@@ -4,30 +4,27 @@ import constant.GridConstant;
 
 import java.awt.*;
 
+import static constant.GameConstant.DEFAULT_EGG_COLOR;
+
 /**
  * Created by 11755_000 on 2018/1/23.
  */
-public class Egg {
-  Node node;
-  Color color;
+public class Egg extends Node {
+  private Color color;
 
   public Egg() {
-    int x = 5 * GridConstant.BLOCK_SIZE;
-    int y = 5 * GridConstant.BLOCK_SIZE;
-    node = new Node(x, y);
-    node.setSize(GridConstant.BLOCK_SIZE);
-    color = Color.orange;
+    this(5 * GridConstant.BLOCK_SIZE, 5 * GridConstant.BLOCK_SIZE);
+  }
+
+  public Egg(int x, int y){
+    super(x, y);
+    this.color = DEFAULT_EGG_COLOR;
   }
 
   public void draw(Graphics g) {
     Color c = g.getColor();
     g.setColor(color);
-    g.fillRect(node.getX(), node.getY(), node.getSize(), node.getSize());
+    super.draw(g);
     g.setColor(c);
-  }
-
-  public void rebirth(Snake s) {
-    node.x = (int) (Math.random() * (GridConstant.X_COUNT - 4) + 2) * GridConstant.BLOCK_SIZE;
-    node.y = (int) (Math.random() * (GridConstant.Y_COUNT - 4) + 2) * GridConstant.BLOCK_SIZE;
   }
 }

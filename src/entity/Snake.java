@@ -42,8 +42,8 @@ public class Snake {
   }
 
   public boolean isEating(Egg egg) {
-    Rectangle eggRect = new Rectangle(egg.node.x, egg.node.y, egg.node.size, egg.node.size);
-    Rectangle headRect = new Rectangle(head.x, head.y, head.size, head.size);
+    Rectangle eggRect = new Rectangle(egg.getX(), egg.getY(), egg.getSize(), egg.getSize());
+    Rectangle headRect = new Rectangle(head.getX(), head.getY(), head.getSize(), head.getSize());
     return headRect.intersects(eggRect);
   }
 
@@ -70,11 +70,11 @@ public class Snake {
       head = tempHead;
       tail = tempHead;
     } else {
-      Node tempTail = tail.pre;
-      tempHead.next = head;
-      head.pre = tempHead;
+      Node tempTail = tail.getPre();
+      tempHead.setNext(head);
+      head.setPre(tempHead);
       head = tempHead;
-      tempTail.next = null;
+      tempTail.setNext(null);
       tail = tempTail;
     }
 
@@ -84,23 +84,23 @@ public class Snake {
     int key = e.getKeyCode();
     switch (key) {
       case 37: {
-        if (head.getDir() != Node.direction.right)
-          head.setDir(Node.direction.left);
+        if (head.getDir() != Node.Direction.right)
+          head.setDir(Node.Direction.left);
       }
       break;
       case 38: {
-        if (head.getDir() != Node.direction.down)
-          head.setDir(Node.direction.up);
+        if (head.getDir() != Node.Direction.down)
+          head.setDir(Node.Direction.up);
       }
       break;
       case 39: {
-        if (head.getDir() != Node.direction.left)
-          head.setDir(Node.direction.right);
+        if (head.getDir() != Node.Direction.left)
+          head.setDir(Node.Direction.right);
       }
       break;
       case 40: {
-        if (head.getDir() != Node.direction.up)
-          head.setDir(Node.direction.down);
+        if (head.getDir() != Node.Direction.up)
+          head.setDir(Node.Direction.down);
       }
       break;
     }
@@ -108,31 +108,31 @@ public class Snake {
 
   public void growUp(Egg egg) {
     Node temp = new Node();
-    temp.y = egg.node.y;
-    temp.x = egg.node.x;
+    temp.setY(egg.getY());
+    temp.setX(egg.getX());
     temp.setDir(head.getDir());
-    head.pre = temp;
-    temp.next = head;
+    head.setPre(temp);
+    temp.setNext(head);
     head = temp;
     size++;
   }
 
   public boolean isDead() {
     boolean fail = false;
-    if (head.x < 0 || head.y < 0 || head.x + head.size > GameConstant.GRID_WIDTH || head.y + head.size > GameConstant.GRID_HEIGHT) {
+    if (head.getX() < 0 || head.getY() < 0 || head.getX() + head.getSize() > GameConstant.GRID_WIDTH || head.getY() + head.getSize() > GameConstant.GRID_HEIGHT) {
       fail = true;
     }
     if (size > 4) {
-      Rectangle headRect = new Rectangle(head.x, head.y, head.size, head.size);
-      Node temp = head.next.next.next.next;
+      Rectangle headRect = new Rectangle(head.getX(), head.getY(), head.getSize(), head.getSize());
+      Node temp = head.getNext().getNext().getNext().getNext();
       Rectangle tempRect = null;
       while (temp != null) {
-        tempRect = new Rectangle(temp.x, temp.y, temp.size, temp.size);
+        tempRect = new Rectangle(temp.getX(), temp.getY(), temp.getSize(), temp.getSize());
         if (headRect.intersects(tempRect)) {
           fail = true;
           break;
         }
-        temp = temp.next;
+        temp = temp.getNext();
       }
     }
     return fail;
@@ -147,7 +147,7 @@ public class Snake {
       g.fillRect(no.getX(), no.getY(), no.getSize(), no.getSize());
       g.setColor(palette.get(index));
       g.drawRect(no.getX(), no.getY(), no.getSize(), no.getSize());
-      no = no.next;
+      no = no.getNext();
     }
     g.setColor(c);
   }

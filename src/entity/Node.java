@@ -2,34 +2,37 @@ package entity;
 
 import constant.GridConstant;
 
+import java.awt.*;
+
 /**
  * Created by 11755_000 on 2018/1/23.
  */
 
 public class Node {
-  public enum direction {
+  public enum Direction {
     up, down, left, right;
   }
 
-  int size;
-  int x;
-  int y;
-  private direction dir;
-  Node pre;
-  Node next;
+  private int size;
+  private int x;
+  private int y;
 
-  public Node(int x, int y) {
+  private Direction dir;
+  private Node pre;
+  private Node next;
+
+  Node(int x, int y) {
     size = GridConstant.BLOCK_SIZE;
-    dir = direction.right;
+    dir = Direction.right;
     this.x = x;
     this.y = y;
   }
 
-  public Node() {
+  Node() {
     this(0, 0);
   }
 
-  public int getSize() {
+  int getSize() {
     return size;
   }
 
@@ -37,7 +40,7 @@ public class Node {
     this.size = size;
   }
 
-  public int getX() {
+  int getX() {
     return x;
   }
 
@@ -45,7 +48,7 @@ public class Node {
     this.x = x;
   }
 
-  public int getY() {
+  int getY() {
     return y;
   }
 
@@ -53,11 +56,11 @@ public class Node {
     this.y = y;
   }
 
-  public direction getDir() {
+  Direction getDir() {
     return dir;
   }
 
-  public void setDir(direction dir) {
+  void setDir(Direction dir) {
     this.dir = dir;
   }
 
@@ -67,6 +70,18 @@ public class Node {
 
   public void setNext(Node next) {
     this.next = next;
+  }
+
+  public Node getPre() {
+    return pre;
+  }
+
+  public void setPre(Node pre) {
+    this.pre = pre;
+  }
+
+  public void draw(Graphics g) {
+    g.fillRect(this.getX(), this.getY(), this.getSize(), this.getSize());
   }
 }
 
