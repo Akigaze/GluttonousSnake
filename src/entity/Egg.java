@@ -11,6 +11,7 @@ import static constant.GameConstant.DEFAULT_EGG_COLOR;
  */
 public class Egg extends Node {
   private int score = 1;
+  private int hp;
 
   public Egg() {
     this(5 * GridConstant.BLOCK_SIZE, 5 * GridConstant.BLOCK_SIZE);
@@ -21,11 +22,19 @@ public class Egg extends Node {
     this.setColor(DEFAULT_EGG_COLOR);
   }
 
+  public boolean die(){
+    return this.hp <= 0;
+  }
+
   public void draw(Graphics g) {
     Color c = g.getColor();
+    if (this.hp < 40){
+      this.setColor(this.getColor().darker());
+    }
     g.setColor(this.getColor());
     super.draw(g);
     g.setColor(c);
+    this.hp -- ;
   }
 
   public int getScore() {
@@ -34,5 +43,9 @@ public class Egg extends Node {
 
   public void setScore(int score) {
     this.score = score;
+  }
+
+  public void setHp(int hp) {
+    this.hp = hp;
   }
 }

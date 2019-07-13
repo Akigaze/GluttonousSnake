@@ -100,6 +100,10 @@ public class GluttonousSnakeGame extends BaseFrame {
       }
     }
 
+    if (this.egg.die()){
+      this.egg = this.foodFactory.birth(this.snake);
+    }
+
     this.snake.draw(g);
     this.egg.draw(g);
     if (this.gameOver) {

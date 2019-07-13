@@ -80,7 +80,7 @@ public class Node {
     return color;
   }
 
-  void setColor(Color color) {
+  public void setColor(Color color) {
     this.color = color;
   }
 

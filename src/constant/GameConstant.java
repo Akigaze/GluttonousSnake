@@ -12,5 +12,6 @@ public class GameConstant {
 
   public static final Color DEFAULT_EGG_COLOR = Color.orange;
   public static final Color STAR_COLOR = Color.green;
+  public static final Color SUN_COLOR = Color.red;
   public static final Color DEFAULT_SNAKE_COLOR = Color.GRAY;
 }
