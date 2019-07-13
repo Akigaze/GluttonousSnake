@@ -1,6 +1,6 @@
 package game;
 
-import method.Constant;
+import method.GridConstant;
 
 /**
  * Created by 11755_000 on 2018/1/23.
@@ -19,7 +19,7 @@ public class Node {
   Node next;
 
   public Node(int x, int y) {
-    size = Constant.BLOCK_SIZE;
+    size = GridConstant.BLOCK_SIZE;
     dir = direction.right;
     this.x = x;
     this.y = y;

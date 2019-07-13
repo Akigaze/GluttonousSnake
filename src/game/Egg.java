@@ -1,6 +1,6 @@
 package game;
 
-import method.Constant;
+import method.GridConstant;
 
 import java.awt.*;
 
@@ -12,10 +12,10 @@ public class Egg {
   Color color;
 
   public Egg() {
-    int x = 5 * Constant.BLOCK_SIZE;
-    int y = 5 * Constant.BLOCK_SIZE;
+    int x = 5 * GridConstant.BLOCK_SIZE;
+    int y = 5 * GridConstant.BLOCK_SIZE;
     node = new Node(x, y);
-    node.setSize(Constant.BLOCK_SIZE);
+    node.setSize(GridConstant.BLOCK_SIZE);
     color = Color.orange;
   }
 
@@ -26,8 +26,8 @@ public class Egg {
     g.setColor(c);
   }
 
-  public void reappear(Snake s) {
-    node.x = (int) (Math.random() * (Constant.X_COUNT - 4) + 2) * Constant.BLOCK_SIZE;
-    node.y = (int) (Math.random() * (Constant.Y_COUNT - 4) + 2) * Constant.BLOCK_SIZE;
+  public void rebirth(Snake s) {
+    node.x = (int) (Math.random() * (GridConstant.X_COUNT - 4) + 2) * GridConstant.BLOCK_SIZE;
+    node.y = (int) (Math.random() * (GridConstant.Y_COUNT - 4) + 2) * GridConstant.BLOCK_SIZE;
   }
 }

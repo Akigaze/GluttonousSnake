@@ -1,6 +1,6 @@
 package test;
 
-import game.GluttonousSnakeGame;
+import view.GluttonousSnakeGame;
 
 /**
  * Created by 11755_000 on 2018/1/23.

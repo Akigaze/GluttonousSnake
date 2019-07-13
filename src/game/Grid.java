@@ -1,6 +1,6 @@
 package game;
 
-import method.Constant;
+import method.GridConstant;
 
 import java.awt.*;
 
@@ -15,28 +15,40 @@ public class Grid {
   private int height;
 
   public Grid() {
-    blockSize = Constant.BLOCK_SIZE;
-    width = Constant.WIDTH;
-    height = Constant.HEIGHT;
-    background = Color.BLACK;
-    foreground = Color.DARK_GRAY;
+    blockSize = GridConstant.BLOCK_SIZE;
+    width = GridConstant.WIDTH;
+    height = GridConstant.HEIGHT;
+    background = GridConstant.BACKGROUND_COLOR;
+    foreground = GridConstant.FOREGROUND_COLOR;
   }
 
-  public void drwn(Graphics g) {
+  public void drawn(Graphics g) {
     Color c = g.getColor();
-    g.setColor(background);
-    g.fillRect(0, 0, width, height);
-    g.setColor(foreground);
-    int blockNO = 1;
-    int top = 0;
-    int left = 0;
-    while (blockNO * blockSize < width || blockNO * blockSize < height) {
-      top += blockSize;
-      left += blockSize;
-      g.drawLine(left, 0, left, height);
-      g.drawLine(0, top, width, top);
-      blockNO++;
-    }
+    g.setColor(this.background);
+    g.fillRect(0, 0, this.width, this.height);
+    g.setColor(this.foreground);
+    this.drawHorizontalLines(g);
+    this.drawVerticalLines(g);
     g.setColor(c);
+  }
+
+  private void drawVerticalLines(Graphics g) {
+    int lineNumber = 1;
+    int left = 0;
+    while (lineNumber * this.blockSize < this.width ) {
+      left += this.blockSize;
+      g.drawLine(left, 0, left, this.height);
+      lineNumber++;
+    }
+  }
+
+  private void drawHorizontalLines(Graphics g) {
+    int lineNumber = 1;
+    int top = 0;
+    while (lineNumber * this.blockSize < this.height) {
+      top += this.blockSize;
+      g.drawLine(0, top, this.width, top);
+      lineNumber++;
+    }
   }
 }

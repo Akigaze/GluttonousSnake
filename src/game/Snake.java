@@ -1,10 +1,11 @@
 package game;
 
-import method.Constant;
+import method.GridConstant;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.util.*;
+import java.util.List;
 
 /**
  * Created by 11755_000 on 2018/1/23.
@@ -34,13 +35,13 @@ public class Snake {
   }
 
   public Snake() {
-    head = new Node(2 * Constant.BLOCK_SIZE, 2 * Constant.BLOCK_SIZE);
-    speed = Constant.BLOCK_SIZE;
+    head = new Node(2 * GridConstant.BLOCK_SIZE, 2 * GridConstant.BLOCK_SIZE);
+    speed = GridConstant.BLOCK_SIZE;
 
     tail = head;
   }
 
-  public boolean isMealTime(Egg egg) {
+  public boolean isEating(Egg egg) {
     Rectangle eggRect = new Rectangle(egg.node.x, egg.node.y, egg.node.size, egg.node.size);
     Rectangle headRect = new Rectangle(head.x, head.y, head.size, head.size);
     return headRect.intersects(eggRect);
@@ -86,30 +87,26 @@ public class Snake {
         if (head.getDir() != Node.direction.right)
           head.setDir(Node.direction.left);
       }
-      ;
       break;
       case 38: {
         if (head.getDir() != Node.direction.down)
           head.setDir(Node.direction.up);
       }
-      ;
       break;
       case 39: {
         if (head.getDir() != Node.direction.left)
           head.setDir(Node.direction.right);
       }
-      ;
       break;
       case 40: {
         if (head.getDir() != Node.direction.up)
           head.setDir(Node.direction.down);
       }
-      ;
       break;
     }
   }
 
-  public void eat(Egg egg) {
+  public void growUp(Egg egg) {
     Node temp = new Node();
     temp.y = egg.node.y;
     temp.x = egg.node.x;
@@ -120,9 +117,9 @@ public class Snake {
     size++;
   }
 
-  public boolean isFail() {
+  public boolean isDead() {
     boolean fail = false;
-    if (head.x < 0 || head.y < 0 || head.x + head.size > Constant.WIDTH || head.y + head.size > Constant.HEIGHT) {
+    if (head.x < 0 || head.y < 0 || head.x + head.size > GridConstant.WIDTH || head.y + head.size > GridConstant.HEIGHT) {
       fail = true;
     }
     if (size > 4) {
@@ -153,5 +150,9 @@ public class Snake {
       no = no.next;
     }
     g.setColor(c);
+  }
+
+  public int getSize() {
+    return size;
   }
 }

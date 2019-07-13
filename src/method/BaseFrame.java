@@ -8,14 +8,15 @@ import java.awt.event.WindowEvent;
  * Created by 11755_000 on 2018/1/23.
  */
 public class BaseFrame extends Frame {
-  protected int gameSpeed = 80;
+  protected final static int DEFAULT_SPEED = 80;
+  protected int speed = DEFAULT_SPEED;
 
   class MoveThreas extends Thread {
     @Override
     public void run() {
       while (true) {
         try {
-          sleep(gameSpeed);
+          sleep(speed);
         } catch (InterruptedException e) {
           e.printStackTrace();
         }
@@ -28,7 +29,7 @@ public class BaseFrame extends Frame {
 
   public void update(Graphics g) {
     if (offScreenImage == null) {
-      offScreenImage = this.createImage(Constant.WIDTH, Constant.HEIGHT);
+      offScreenImage = this.createImage(GridConstant.WIDTH, GridConstant.HEIGHT);
     }
     Graphics gOff = offScreenImage.getGraphics();
     //paint(g);
@@ -37,8 +38,8 @@ public class BaseFrame extends Frame {
   }
 
   public void launch() {
-    setLocation(Constant.X, Constant.Y);
-    setSize(Constant.WIDTH, Constant.HEIGHT);
+    setLocation(GridConstant.X, GridConstant.Y);
+    setSize(GridConstant.WIDTH, GridConstant.HEIGHT);
     setVisible(true);
     addWindowListener(new WindowAdapter() {
       @Override
