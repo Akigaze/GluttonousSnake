@@ -7,10 +7,10 @@ import java.awt.*;
  */
 public class GridConstant {
 
-  public static int BLOCK_SIZE = 20;
-  public static int X_COUNT = GameConstant.GRID_WIDTH / BLOCK_SIZE;
-  public static int Y_COUNT = GameConstant.GRID_HEIGHT / BLOCK_SIZE;
+  public final static int BLOCK_SIZE = 20;
+  public final static int X_COUNT = GameConstant.GRID_WIDTH / BLOCK_SIZE;
+  public final static int Y_COUNT = GameConstant.GRID_HEIGHT / BLOCK_SIZE;
 
-  public static Color BACKGROUND_COLOR = Color.BLACK;
-  public static Color FOREGROUND_COLOR = Color.DARK_GRAY;
+  public final static Color BACKGROUND_COLOR = Color.BLACK;
+  public final static Color FOREGROUND_COLOR = Color.DARK_GRAY;
 }

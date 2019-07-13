@@ -23,7 +23,7 @@ public class GluttonousSnakeGame extends BaseFrame {
         speedChange(keyCode);
       }
       stop(keyCode);
-      restart(e);
+      restart(keyCode);
     }
   }
 
@@ -48,6 +48,7 @@ public class GluttonousSnakeGame extends BaseFrame {
   }
 
   private static Grid grid = new Grid();
+  private EggFactory eggFactory;
   private Snake snake;
   private Egg egg;
   private boolean stop;
@@ -56,6 +57,7 @@ public class GluttonousSnakeGame extends BaseFrame {
   public GluttonousSnakeGame() {
     this.snake = new Snake();
     this.egg = new Egg();
+    this.eggFactory = new EggFactory();
   }
 
   private void speedChange(int key) {
@@ -68,8 +70,8 @@ public class GluttonousSnakeGame extends BaseFrame {
     }
   }
 
-  private void restart(KeyEvent e) {
-    if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+  private void restart(int key) {
+    if (key == KeyEvent.VK_ENTER) {
       this.stop = false;
       this.gameOver = false;
       this.speed = DEFAULT_SPEED;
@@ -93,7 +95,7 @@ public class GluttonousSnakeGame extends BaseFrame {
         this.snake.move();
         if (this.snake.isEating(this.egg)) {
           this.snake.growUp(this.egg);
-          this.egg = EggFactory.birth(this.snake);
+          this.egg = this.eggFactory.birth(this.snake);
         }
       }
     }

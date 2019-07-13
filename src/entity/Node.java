@@ -1,9 +1,10 @@
 package entity;
 
 import constant.Direction;
-import constant.GridConstant;
 
 import java.awt.*;
+
+import static constant.GridConstant.BLOCK_SIZE;
 
 /**
  * Created by 11755_000 on 2018/1/23.
@@ -18,18 +19,16 @@ public class Node {
   private Node pre;
   private Node next;
 
+  private Color color;
+
   Node(int x, int y) {
-    size = GridConstant.BLOCK_SIZE;
+    size = BLOCK_SIZE;
     direction = Direction.right;
     this.x = x;
     this.y = y;
   }
 
-  Node() {
-    this(0, 0);
-  }
-
-  int getSize() {
+  private int getSize() {
     return size;
   }
 
@@ -65,16 +64,24 @@ public class Node {
     return next;
   }
 
-  public void setNext(Node next) {
+  void setNext(Node next) {
     this.next = next;
   }
 
-  public Node getPre() {
+  Node getPre() {
     return pre;
   }
 
-  public void setPre(Node pre) {
+  void setPre(Node pre) {
     this.pre = pre;
+  }
+
+  Color getColor() {
+    return color;
+  }
+
+  void setColor(Color color) {
+    this.color = color;
   }
 
   public Rectangle toRectangle(){
@@ -84,5 +91,10 @@ public class Node {
   public void draw(Graphics g) {
     g.fillRect(this.getX(), this.getY(), this.getSize(), this.getSize());
   }
+
+  public void outline(Graphics g){
+    g.drawRect(this.getX(), this.getY(), this.getSize(), this.getSize());
+  }
+
 }
 

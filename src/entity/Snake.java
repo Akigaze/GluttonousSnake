@@ -7,6 +7,8 @@ import java.awt.*;
 import java.util.Arrays;
 
 import static constant.GameConstant.DEFAULT_SNAKE_COLOR;
+import static constant.GameConstant.GRID_HEIGHT;
+import static constant.GameConstant.GRID_WIDTH;
 import static constant.GridConstant.BLOCK_SIZE;
 
 /**
@@ -15,10 +17,10 @@ import static constant.GridConstant.BLOCK_SIZE;
 public class Snake {
 
   enum MoveMonitor {
-    UP(Direction.up, 0, - BLOCK_SIZE),
-    DOWN(Direction.down, 0, BLOCK_SIZE),
-    LEFT(Direction.left, - BLOCK_SIZE, 0),
-    RIGHT(Direction.right, BLOCK_SIZE, 0),
+    UP(Direction.up, 0, -1),
+    DOWN(Direction.down, 0, 1),
+    LEFT(Direction.left, -1, 0),
+    RIGHT(Direction.right, 1, 0),
     DEFAULT(null, 0, 0);
 
     private Direction direction;
@@ -35,15 +37,15 @@ public class Snake {
       return Arrays.stream(MoveMonitor.values()).filter(m -> m.direction.equals(direction)).findFirst().orElse(DEFAULT);
     }
   }
+
   private Node head;
   private Node tail;
   private Color color = DEFAULT_SNAKE_COLOR;
-  private int speed;
+  private int speed = BLOCK_SIZE;
   private int size = 1;
 
   public Snake() {
     this.head = new Node(2 * BLOCK_SIZE, 2 * BLOCK_SIZE);
-    this.speed = BLOCK_SIZE;
     this.tail = this.head;
   }
 
@@ -65,7 +67,7 @@ public class Snake {
 
   private Node getNextHead() {
     MoveMonitor monitor = MoveMonitor.getMonitor(this.head.getDirection());
-    Node nextHead = new Node(monitor.x + this.head.getX(), monitor.y + this.head.getY());
+    Node nextHead = new Node(monitor.x * this.speed + this.head.getX(), monitor.y * this.speed + this.head.getY());
     nextHead.setDirection(this.head.getDirection());
     return nextHead;
   }
@@ -82,17 +84,20 @@ public class Snake {
     }
   }
 
-  public void growUp(Egg egg) {
-    Node newHead = new Node(egg.getX(), egg.getY());
-    newHead.setDirection(this.head.getDirection());
-    this.head.setPre(newHead);
-    newHead.setNext(this.head);
-    this.head = newHead;
+  public void growUp(Node food) {
+    food.setDirection(this.head.getDirection());
+    food.setColor(this.color);
+    this.head.setPre(food);
+    food.setNext(this.head);
+    this.head = food;
     size++;
   }
 
   private boolean isHitBorder() {
-    return this.head.getX() < 0 || this.head.getY() < 0 || this.head.getX() + this.head.getSize() > GameConstant.GRID_WIDTH || this.head.getY() + this.head.getSize() > GameConstant.GRID_HEIGHT;
+    return this.head.getX() < 0
+      || this.head.getY() < 0
+      || this.head.getX() > GRID_WIDTH
+      || this.head.getY() > GRID_HEIGHT;
   }
   private boolean canHitBody(){
     return this.size > 4;
@@ -122,18 +127,22 @@ public class Snake {
   }
 
   public void draw(Graphics g) {
-    Node no = head;
+    Node node = head;
     Color c = g.getColor();
     g.setColor(color);
-    while (no != null) {
-      g.fillRect(no.getX(), no.getY(), no.getSize(), no.getSize());
-//      g.drawRect(no.getX(), no.getY(), no.getSize(), no.getSize());
-      no = no.getNext();
+    while (node != null) {
+      node.draw(g);
+//      node.outline(g);
+      node = node.getNext();
     }
     g.setColor(c);
   }
 
   public int getSize() {
     return this.size;
+  }
+
+  public Node getHead() {
+    return head;
   }
 }

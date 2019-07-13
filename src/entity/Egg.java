@@ -10,7 +10,6 @@ import static constant.GameConstant.DEFAULT_EGG_COLOR;
  * Created by 11755_000 on 2018/1/23.
  */
 public class Egg extends Node {
-  private Color color;
 
   public Egg() {
     this(5 * GridConstant.BLOCK_SIZE, 5 * GridConstant.BLOCK_SIZE);
@@ -18,12 +17,12 @@ public class Egg extends Node {
 
   public Egg(int x, int y){
     super(x, y);
-    this.color = DEFAULT_EGG_COLOR;
+    this.setColor(DEFAULT_EGG_COLOR);
   }
 
   public void draw(Graphics g) {
     Color c = g.getColor();
-    g.setColor(color);
+    g.setColor(this.getColor());
     super.draw(g);
     g.setColor(c);
   }
